@@ -1,12 +1,21 @@
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace FlagData
 {
     /// <summary>
     /// This model object represents a single flag
     /// </summary>
-    public class Flag
+    public class Flag :INotifyPropertyChanged
     {
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         /// <summary>
         /// Name of the country that this flag belongs to
         /// </summary>
@@ -18,7 +27,21 @@ namespace FlagData
         /// <summary>
         /// The date this flag was adopted
         /// </summary>
-        public DateTime DateAdopted { get; set; }
+        /// 
+        private DateTime _dateAdopted;
+        public DateTime DateAdopted
+        {
+            get
+            { return _dateAdopted; }
+            set
+            {
+                if (_dateAdopted != value)
+                {
+                    _dateAdopted = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
         /// <summary>
         /// Whether the flag includes an image/shield as part of the design
         /// </summary>
